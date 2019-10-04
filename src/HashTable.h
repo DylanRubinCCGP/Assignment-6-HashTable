@@ -82,25 +82,18 @@ namespace csi281 {
 			size_t hashIndex = hash(key) % capacity;
 			
 			// find item with find_if 
-			K item = find_if(&backingStore[hashIndex].begin, &backingStore[hashIndex].end, key); //need to change key in find_if
+			K item = find_if(&backingStore[hashIndex].begin(), &backingStore[hashIndex].end(), ifKey(key); 
 
-			// if item is found return item
-			if (item != &backingStore[hashIndex].end) // this is wrong, I think
-			{
-				return item;
-			}
 			// if item isn't found return nullopt
-			else
+			if (item == &backingStore[hashIndex].end) 
 			{
 				return nullopt;
 			}
-
-			// maybe use instead
-			for (auto p : 1) {
+			// if item is found return item value
+			else
+			{
+				return item.second; //second meaning value
 			}
-
-
-            // YOUR CODE HERE
         }
         
         // Remove a key and any associated value from the hash table
@@ -110,6 +103,14 @@ namespace csi281 {
         // location in the backing store, so you're modifying
         // the original and not a copy
         void remove(const K &key) {
+			// get index of array in hash
+			size_t hashIndex = hash(key) % capacity;
+
+			// remove key and value
+			remove_if(&backingStore[hashIndex].begin(), &backingStore[hashIndex].end(), ifKey(key));
+
+			// lower count
+			count--;
             // YOUR CODE HERE
         }
         
@@ -138,6 +139,14 @@ namespace csi281 {
                 cout << endl;
             }
         }
+
+		// bool for find_if and remove_if
+		bool ifKey(const K &key)
+		{
+			//if key is found return true
+			return key == p.first
+		}
+
         
     private:
         int capacity = 0;
