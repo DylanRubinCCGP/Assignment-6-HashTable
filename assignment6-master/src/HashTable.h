@@ -78,6 +78,28 @@ namespace csi281 {
         // location in the backing store, so you're modifying
         // the original and not a copy
         optional<V> get(const K &key) {
+			// get index of array in hash
+			size_t hashIndex = hash(key) % capacity;
+			
+			// find item with find_if 
+			K item = find_if(&backingStore[hashIndex].begin, &backingStore[hashIndex].end, key); //need to change key in find_if
+
+			// if item is found return item
+			if (item != &backingStore[hashIndex].end) // this is wrong, I think
+			{
+				return item;
+			}
+			// if item isn't found return nullopt
+			else
+			{
+				return nullopt;
+			}
+
+			// maybe use instead
+			for (auto p : 1) {
+			}
+
+
             // YOUR CODE HERE
         }
         
