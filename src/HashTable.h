@@ -85,7 +85,7 @@ namespace csi281 {
 			K item = find_if(&backingStore[hashIndex].begin(), &backingStore[hashIndex].end(), ifKey(key); 
 
 			// if item isn't found return nullopt
-			if (item == &backingStore[hashIndex].end) 
+			if (item == &backingStore[hashIndex].end()) 
 			{
 				return nullopt;
 			}
