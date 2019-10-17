@@ -93,7 +93,7 @@ namespace csi281 {
 			float currentLoadFactor = getLoadFactor();
 
 			// check if current load factor exceeds max load factor if true then change
-			if (currentLoadFactor > MAX_LOAD_FACTOR)
+			if (currentLoadFactor >= MAX_LOAD_FACTOR)
 			{
 				resize(capacity * growthFactor);
 			}
@@ -183,7 +183,6 @@ namespace csi281 {
         // new backing store of size cap, or create
         // the backingStore for the first time
         void resize(int cap) {
-
 			// set capacity to cap
 			capacity = cap;
 
@@ -197,20 +196,18 @@ namespace csi281 {
 				// set temp with new size backingStore
 				list<pair<K, V>>* tempStore = new list<pair<K, V>>[cap];
 
-				// set count to 0
-				count = 0;
-
 				// rehash data
-				for (int i = 0; i < capacity; i++) {
+				for (int i = 0; i < capacity/2; i++) {
 					for (auto p : backingStore[i]) {
 						K key = p.first;
 						V value = p.second;
 
-						put(key, value);
+						size_t hashIndex = hash(key) % capacity;
+
+						tempStore[hashIndex].push_back(make_pair(key, value));
 					}
 				}
-
-				// assign backingStore to temp
+				// assign backingStore to tempStore
 				backingStore = tempStore;
 			}
             // YOUR CODE HERE
