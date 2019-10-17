@@ -65,6 +65,36 @@ namespace csi281 {
         // location in the backing store, so you're modifying
         // the original and not a copy
         void put(const K key, const V value) {
+			// get index of array in hash
+			size_t hashIndex = hash(key) % capacity;
+
+			// if unique key add item otherwise change value
+			if (get(key) == nullopt)
+			{
+				backingStore[hashIndex].push_back(make_pair(key, value));
+
+				//add to count
+				count++;
+			}
+			else
+			{
+				for (auto& p : backingStore[hashIndex])
+				{
+					if (p.first == key)
+					{
+						p.second = value;
+					}
+				}
+			}
+
+			// get current load factor
+			float currentLoadFactor = getLoadFactor();
+
+			// check if current load factor exceeds max load factor if true then change
+			if (currentLoadFactor > MAX_LOAD_FACTOR)
+			{
+				resize(capacity * growthFactor);
+			}
             // YOUR CODE HERE
         }
         
@@ -80,20 +110,15 @@ namespace csi281 {
         optional<V> get(const K &key) {
 			// get index of array in hash
 			size_t hashIndex = hash(key) % capacity;
-			
-			// find item with find_if 
-			K item = find_if(&backingStore[hashIndex].begin(), &backingStore[hashIndex].end(), ifKey(key); 
-
-			// if item isn't found return nullopt
-			if (item == &backingStore[hashIndex].end()) 
+		
+			for (auto& p : backingStore[hashIndex])
 			{
-				return nullopt;
+				if (p.first == key)
+				{
+					return { p.second };
+				}
 			}
-			// if item is found return item value
-			else
-			{
-				return item.second; //second meaning value
-			}
+			return nullopt;
         }
         
         // Remove a key and any associated value from the hash table
@@ -107,8 +132,14 @@ namespace csi281 {
 			size_t hashIndex = hash(key) % capacity;
 
 			// remove key and value
-			remove_if(&backingStore[hashIndex].begin(), &backingStore[hashIndex].end(), ifKey(key));
-
+			for (auto &p : backingStore[hashIndex])
+			{
+				if (p.first == key)
+				{
+					backingStore->remove(p);
+				}
+			}
+			
 			// lower count
 			count--;
             // YOUR CODE HERE
@@ -139,15 +170,6 @@ namespace csi281 {
                 cout << endl;
             }
         }
-
-		// bool for find_if and remove_if
-		bool ifKey(const K &key)
-		{
-			//if key is found return true
-			return key == p.first
-		}
-
-        
     private:
         int capacity = 0;
         int growthFactor = 2;
@@ -159,6 +181,39 @@ namespace csi281 {
         // new backing store of size cap, or create
         // the backingStore for the first time
         void resize(int cap) {
+
+			// set capacity to cap
+			capacity = cap;
+
+			// if creating hash table for first time
+			if (count == 0)
+			{
+				backingStore = new list<pair<K, V>>[cap];
+			}
+			else
+			{
+				// initialize tempStore
+				list<pair<K, V>>* tempStore;
+
+				// set temp with new size backingStore
+				tempStore = new list<pair<K, V>>[cap];
+
+				// set count to 0
+				count = 0;
+
+				// rehash data
+				for (int i = 0; i < capacity; i++) {
+					for (auto p : backingStore[i]) {
+						K key = p.first;
+						V value = p.second;
+
+						put(key, value);
+					}
+				}
+
+				// assign backingStore to temp
+				backingStore = tempStore;
+			}
             // YOUR CODE HERE
         }
         
