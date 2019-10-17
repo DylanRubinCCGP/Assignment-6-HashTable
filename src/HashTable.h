@@ -194,18 +194,15 @@ namespace csi281 {
 			}
 			else
 			{
-				//make tempStore
-				list<pair<K, V>>* tempStore = backingStore;
-
 				// set temp with new size backingStore
-				tempStore = new list<pair<K, V>>[cap];
+				list<pair<K, V>>* tempStore = new list<pair<K, V>>[cap];
 
 				// set count to 0
 				count = 0;
 
 				// rehash data
 				for (int i = 0; i < capacity; i++) {
-					for (auto p : tempStore[i]) {
+					for (auto p : backingStore[i]) {
 						K key = p.first;
 						V value = p.second;
 
