@@ -6,6 +6,8 @@
 //
 //  Copyright 2019 David Kopec
 //
+//	Edited By Michael Bamford
+//
 //  Permission is hereby granted, free of charge, to any person
 //  obtaining a copy of this software and associated documentation files
 //  (the "Software"), to deal in the Software without restriction,
@@ -192,8 +194,8 @@ namespace csi281 {
 			}
 			else
 			{
-				// initialize tempStore
-				list<pair<K, V>>* tempStore;
+				//make tempStore
+				list<pair<K, V>>* tempStore = backingStore;
 
 				// set temp with new size backingStore
 				tempStore = new list<pair<K, V>>[cap];
@@ -203,7 +205,7 @@ namespace csi281 {
 
 				// rehash data
 				for (int i = 0; i < capacity; i++) {
-					for (auto p : backingStore[i]) {
+					for (auto p : tempStore[i]) {
 						K key = p.first;
 						V value = p.second;
 
