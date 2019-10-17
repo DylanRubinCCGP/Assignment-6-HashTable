@@ -6,7 +6,7 @@
 //
 //  Copyright 2019 David Kopec
 //
-//	Edited By Michael Bamford
+//	Edited By Michael Bamford and Dylan Rubin
 //
 //  Permission is hereby granted, free of charge, to any person
 //  obtaining a copy of this software and associated documentation files
