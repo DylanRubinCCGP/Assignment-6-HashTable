@@ -134,16 +134,18 @@ namespace csi281 {
 			size_t hashIndex = hash(key) % capacity;
 
 			// remove key and value
-			for (auto &p : backingStore[hashIndex])
+			for (auto& p : backingStore[hashIndex])
 			{
 				if (p.first == key)
 				{
 					backingStore[hashIndex].remove(p);
+
+					// lower count
+					count--;
+
+					return;
 				}
 			}
-			
-			// lower count
-			count--;
             // YOUR CODE HERE
         }
         
