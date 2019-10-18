@@ -138,7 +138,7 @@ namespace csi281 {
 			{
 				if (p.first == key)
 				{
-					backingStore->remove(p);
+					backingStore[hashIndex].remove(p);
 				}
 			}
 			
